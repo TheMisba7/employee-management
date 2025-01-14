@@ -1,0 +1,37 @@
+# Project Backlog
+
+## Part 1 - Core Features
+- [x] Set up basic entities
+- [ ] Set up database connection
+- [ ] Set spring security with jwt token
+- [ ] Users & Employee CRUD operations
+
+- [ ] Implement ABAC system
+    - [x] Set up policy engine
+    - [ ] Write unit tests
+
+### REST API
+
+- [ ] Create API endpoints for employee
+- [ ] Create API endpoints for users
+- [ ] Add validation
+- [ ] Search and Filtering
+- [ ] Write integration tests
+
+## Audit Trail:
+
+- [ ] Audit logging system
+## User Interface
+
+- [ ] Permission management UI
+    - [ ] Design interface mockups
+    - [ ] Create permission dashboard
+    - [ ] Add role management
+    - [ ] Implement batch updates
+
+- [ ] Employee management interface
+    - [ ] Create employee list view
+    - [ ] Add search functionality
+    - [ ] Implement filters
+    - [ ] Add export options
+
