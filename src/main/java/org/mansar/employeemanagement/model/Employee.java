@@ -19,7 +19,7 @@ public class Employee {
     private String lastname;
     private String jobTitle;
     @ManyToOne
-    private Departement department;
+    private Department department;
     @OneToOne
     private Contact contact;
     @OneToOne

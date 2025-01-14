@@ -12,7 +12,6 @@ import lombok.Setter;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Getter @Setter
 public class User extends Employee {
-    private Long id;
     private String username;
     private String password;
     @ManyToOne
