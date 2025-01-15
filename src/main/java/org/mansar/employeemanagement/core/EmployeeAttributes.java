@@ -1,9 +1,10 @@
 package org.mansar.employeemanagement.core;
 
 public enum EmployeeAttributes {
+    ALL("ALL"),
     FIRSTNAME("firstname"),
     LASTNAME("lastname"),
-    JOB_TITLE("jobtitle"),
+    JOB_TITLE("job_title"),
     DEPARTMENT("department"),
     CONTACT("contact"),
     ADDRESS("address");

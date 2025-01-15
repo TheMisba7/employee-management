@@ -1,6 +1,6 @@
 package org.mansar.employeemanagement.core;
 
-public enum Permission {
+public enum PermissionEnum {
     ALL,
     CREATE,
     UPDATE,
