@@ -12,23 +12,32 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.mansar.employeemanagement.core.EmployeeStatus;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
+@DynamicUpdate
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
     private Long id;
-    @Column(name = "firstname")
+    @Column(name = "firstname", nullable = false)
     private String firstname;
-    @Column(name = "lastname")
+    @Column(name = "lastname", nullable = false)
     private String lastname;
-    @Column(name = "job_title")
+    @Column(name = "job_title", nullable = false)
     private String jobTitle;
+    @Column(name = "status", nullable = false)
+    private EmployeeStatus status;
     @ManyToOne
-    @JoinColumn(name = "department_id")
+    @JoinColumn(name = "department_id", nullable = false)
     private Department department;
     @OneToOne
     @JoinColumn(name = "contact_id")
@@ -36,4 +45,8 @@ public class Employee {
     @OneToOne
     @JoinColumn(name = "address_id")
     private Address address;
+    @CreationTimestamp
+    private LocalDateTime created;
+    @UpdateTimestamp
+    private LocalDateTime updated;
 }

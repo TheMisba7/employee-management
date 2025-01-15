@@ -23,6 +23,12 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public User getById(Long userId) {
+        return userDao.findById(userId)
+                .orElseThrow(() -> new RecordNotFoundException(userId, "user"));
+    }
+
+    @Override
     public User update(User user) {
         return null;
     }

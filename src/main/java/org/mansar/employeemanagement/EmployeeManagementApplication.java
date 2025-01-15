@@ -1,6 +1,6 @@
 package org.mansar.employeemanagement;
 
-import org.mansar.employeemanagement.core.EmployeeAttributes;
+import org.mansar.employeemanagement.core.EmployeeAttribute;
 import org.mansar.employeemanagement.core.PermissionEnum;
 import org.mansar.employeemanagement.core.RoleEnum;
 import org.mansar.employeemanagement.dao.RoleDao;
@@ -23,18 +23,35 @@ public class EmployeeManagementApplication {
     CommandLineRunner commandLineRunner(RoleDao roleDao) {
         return  args -> {
             roleDao.deleteAll();
-            Role role = new Role();
+            Role manager = new Role();
 
             Permission  permission = new Permission();
             permission.setName(PermissionEnum.UPDATE);
-            permission.getAttributes().add(EmployeeAttributes.FIRSTNAME);
-            permission.getAttributes().add(EmployeeAttributes.LASTNAME);
-            permission.getAttributes().add(EmployeeAttributes.CONTACT);
-            permission.getAttributes().add(EmployeeAttributes.JOB_TITLE);
-            role.setName(RoleEnum.MANAGER);
-            role.addPermission(permission);
+            permission.getAttributes().add(EmployeeAttribute.FIRSTNAME);
+            permission.getAttributes().add(EmployeeAttribute.LASTNAME);
+            permission.getAttributes().add(EmployeeAttribute.CONTACT);
+            permission.getAttributes().add(EmployeeAttribute.JOB_TITLE);
+            manager.setName(RoleEnum.MANAGER);
+            manager.addPermission(permission);
+            roleDao.save(manager);
 
-            roleDao.save(role);
+            Role admin = new Role();
+            admin.setName(RoleEnum.ADMIN);
+            Permission admPermission = new Permission();
+            admPermission.setName(PermissionEnum.ALL);
+            admPermission.getAttributes().add(EmployeeAttribute.ALL);
+
+            Role hr = new Role();
+
+            Permission hrPermission = new Permission();
+            hrPermission.setName(PermissionEnum.ALL);
+            hrPermission.getAttributes().add(EmployeeAttribute.ALL);
+            hr.setName(RoleEnum.RH);
+            hr.addPermission(hrPermission);
+            admin.addPermission(admPermission);
+
+            roleDao.save(admin);
+            roleDao.save(hr);
 
         };
     }

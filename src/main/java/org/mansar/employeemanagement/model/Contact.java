@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +20,8 @@ public class Contact {
     private String workPhone;
     private String homePhone;
     private String personalEmail;
+    @NotBlank(message = "email is required.")
+    @Email(regexp = "^(.+)@(\\S+)$", message = "email is not in the required format.")
     private String workEmail;
     private String emergencyContactName;
     private String emergencyContactPhone;

@@ -16,7 +16,7 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.Setter;
 import org.mansar.employeemanagement.converter.EmployeeAttributesSetConverter;
-import org.mansar.employeemanagement.core.EmployeeAttributes;
+import org.mansar.employeemanagement.core.EmployeeAttribute;
 import org.mansar.employeemanagement.core.PermissionEnum;
 
 import java.util.HashSet;
@@ -36,7 +36,7 @@ public class Permission {
     private PermissionEnum name;
     @Convert(converter = EmployeeAttributesSetConverter.class)
     @Column(name = "attributes")
-    private Set<EmployeeAttributes> attributes = new HashSet<>();
+    private Set<EmployeeAttribute> attributes = new HashSet<>();
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role role;

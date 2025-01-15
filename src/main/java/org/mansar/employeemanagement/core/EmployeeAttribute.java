@@ -1,16 +1,19 @@
 package org.mansar.employeemanagement.core;
 
-public enum EmployeeAttributes {
+public enum EmployeeAttribute {
     ALL("ALL"),
     FIRSTNAME("firstname"),
     LASTNAME("lastname"),
     JOB_TITLE("job_title"),
     DEPARTMENT("department"),
     CONTACT("contact"),
-    ADDRESS("address");
+    ADDRESS("address"),
+    CREATED("created"),
+    UPDATED("updated"),
+    STATUS("status");
 
     private final String value;
-    EmployeeAttributes(String name) {
+    EmployeeAttribute(String name) {
         this.value = name;
     }
 
