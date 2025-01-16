@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.mansar.employeemanagement.security.filter.JwtAuthorizationFilter;
 import org.mansar.employeemanagement.security.filter.LoginFilter;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -27,7 +26,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @EnableMethodSecurity
 public class SecurityConfig {
-    public static final String [] ALLOWED_REQUEST = {"/login", "/register", "/swagger-ui/**", "/v3/**"};
+    public static final String [] ALLOWED_REQUEST = {"/login", "/register", "/swagger-resources/",
+            "/swagger-ui/**",
+            "/v3/api-docs/**"};
     private final LoginFilter loginFilter;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
@@ -40,8 +41,6 @@ public class SecurityConfig {
         https.authorizeHttpRequests(
                 cst ->
                         cst.requestMatchers(ALLOWED_REQUEST).permitAll()
-                        .requestMatchers("/api/users", HttpMethod.POST.name())
-                        .permitAll()
                         .anyRequest().authenticated()
         );
         https.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

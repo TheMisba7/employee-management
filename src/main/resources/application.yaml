@@ -14,6 +14,11 @@ spring:
     show-sql: true
 
 security:
-   jwt:
+  jwt:
     secret-key: 8FDBDA95196C7B0B18D5335D979F406A6C4721315A801C6332D09DBD5F633AB0
     expiration-time: 3600000
+
+logging:
+  level:
+    web: debug
+

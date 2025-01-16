@@ -1,5 +1,6 @@
 package org.mansar.employeemanagement.core;
 
+import org.mansar.employeemanagement.dto.EmployeeDTO;
 import org.mansar.employeemanagement.dto.request.EmployeeRQ;
 import org.mansar.employeemanagement.exception.AttributeAccessDeniedException;
 import org.mansar.employeemanagement.exception.PermissionDeniedException;
@@ -9,6 +10,7 @@ import org.mansar.employeemanagement.model.Role;
 import org.mansar.employeemanagement.model.User;
 
 import java.lang.reflect.Field;
+import java.util.Set;
 
 /**
  * Attribute based access engine
@@ -37,8 +39,28 @@ public class ABACEngine {
                     Attribute attribute = field.getAnnotation(Attribute.class);
                     if (attribute != null) {
                         EmployeeAttribute targetAttribute = attribute.value();
-                        if (!hasAccessToAttribute(targetAttribute, userPermission))
+                        if (!hasAccessToAttribute(targetAttribute, userPermission) &&
+                                !targetAttribute.equals(EmployeeAttribute.DEPARTMENT))
                             throw new AttributeAccessDeniedException(targetAttribute);
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public static void removeUnauthorizedAttributes(EmployeeDTO employeeRQ, Set<EmployeeAttribute> attributes) {
+        if (attributes.isEmpty() || attributes.contains(EmployeeAttribute.ALL))
+            return;
+        for (Field field: employeeRQ.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            try {
+                Object fieldValue = field.get(employeeRQ);
+                if (fieldValue != null) {
+                    Attribute attribute = field.getAnnotation(Attribute.class);
+                    if (attribute == null ||  !attributes.contains(attribute.value())) {
+                        field.set(employeeRQ, null);
                     }
                 }
             } catch (IllegalAccessException e) {

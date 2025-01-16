@@ -12,7 +12,7 @@ public interface IUserService extends UserDetailsService {
     User getUser(String username);
     User getById(Long userId);
     @Secured("ADMIN")
-    User update(User user);
+    User update(Long userId, UserRQ user);
     @Secured("ADMIN")
     void delete(Long userId);
     static User getCurrentUser() {
