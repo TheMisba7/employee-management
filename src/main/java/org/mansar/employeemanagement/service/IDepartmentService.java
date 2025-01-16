@@ -7,7 +7,7 @@ import java.util.List;
 
 //todo add method level security on all methods, only admin can manage this the department
 public interface IDepartmentService {
-    void create(DepartmentRQ request);
+    Department create(DepartmentRQ request);
     List<Department> listDepartments();
     Department getDepartment(Long id);
 

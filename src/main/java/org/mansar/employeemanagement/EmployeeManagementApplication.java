@@ -1,17 +1,28 @@
 package org.mansar.employeemanagement;
 
 import org.mansar.employeemanagement.core.EmployeeAttribute;
+import org.mansar.employeemanagement.core.EmployeeStatus;
 import org.mansar.employeemanagement.core.PermissionEnum;
 import org.mansar.employeemanagement.core.RoleEnum;
 import org.mansar.employeemanagement.dao.RoleDao;
+import org.mansar.employeemanagement.dao.UserDao;
+import org.mansar.employeemanagement.dto.request.DepartmentRQ;
+import org.mansar.employeemanagement.model.Department;
 import org.mansar.employeemanagement.model.Permission;
 import org.mansar.employeemanagement.model.Role;
+import org.mansar.employeemanagement.model.User;
+import org.mansar.employeemanagement.service.IDepartmentService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
+@EnableMethodSecurity(
+        securedEnabled = true
+)
 public class EmployeeManagementApplication {
 
     public static void main(String[] args) {
@@ -20,8 +31,9 @@ public class EmployeeManagementApplication {
 
 
     @Bean
-    CommandLineRunner commandLineRunner(RoleDao roleDao) {
+    CommandLineRunner commandLineRunner(RoleDao roleDao, PasswordEncoder passwordEncoder, UserDao userService, IDepartmentService departmentService) {
         return  args -> {
+            userService.findByUsername("a.mansar@gmail.com").ifPresent(us -> userService.deleteById(us.getId()));
             roleDao.deleteAll();
             Role manager = new Role();
 
@@ -33,7 +45,7 @@ public class EmployeeManagementApplication {
             permission.getAttributes().add(EmployeeAttribute.JOB_TITLE);
             manager.setName(RoleEnum.MANAGER);
             manager.addPermission(permission);
-            roleDao.save(manager);
+            manager = roleDao.save(manager);
 
             Role admin = new Role();
             admin.setName(RoleEnum.ADMIN);
@@ -50,8 +62,27 @@ public class EmployeeManagementApplication {
             hr.addPermission(hrPermission);
             admin.addPermission(admPermission);
 
-            roleDao.save(admin);
-            roleDao.save(hr);
+            admin = roleDao.save(admin);
+            hr = roleDao.save(hr);
+
+            DepartmentRQ departmentRQ = new DepartmentRQ("IT", null, null);
+            Department department = departmentService.create(departmentRQ);
+
+
+            User userRQ  = new User();
+            userRQ.setStatus(EmployeeStatus.ACTIVE);
+            userRQ.setPassword(passwordEncoder.encode("whynot"));
+            userRQ.setUsername("a.mansar@gmail.com");
+            userRQ.setFirstname("Abdeddaim");
+            userRQ.setFirstname("Mansar");
+            userRQ.setJobTitle("Java developer");
+            userRQ.setRole(admin);
+            userRQ.setDepartment(department);
+
+            userService.save(userRQ);
+
+
+
 
         };
     }

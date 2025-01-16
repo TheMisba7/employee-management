@@ -1,4 +1,4 @@
-package org.mansar.employeemanagement;
+package org.mansar.employeemanagement.mapper;
 
 import org.mansar.employeemanagement.dto.EmployeeDTO;
 import org.mansar.employeemanagement.dto.request.EmployeeRQ;

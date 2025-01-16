@@ -1,7 +1,7 @@
 package org.mansar.employeemanagement.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.mansar.employeemanagement.EmployeeMapper;
+import org.mansar.employeemanagement.mapper.EmployeeMapper;
 import org.mansar.employeemanagement.core.ABACEngine;
 import org.mansar.employeemanagement.core.PermissionEnum;
 import org.mansar.employeemanagement.core.RoleEnum;
