@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface EmployeeDao extends JpaRepository<Employee, Long>, EmployeeCustomDao {
+public interface EmployeeDao extends JpaRepository<Employee, Long> {
     List<Employee> findByDepartmentId(Long departmentId);
 }
