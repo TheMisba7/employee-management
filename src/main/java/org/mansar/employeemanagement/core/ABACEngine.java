@@ -10,6 +10,9 @@ import org.mansar.employeemanagement.model.User;
 
 import java.lang.reflect.Field;
 
+/**
+ * Attribute based access engine
+ */
 public class ABACEngine {
 
     public static boolean canAccessEmployee(Employee employee, User actingUser) {
@@ -36,7 +39,6 @@ public class ABACEngine {
                         EmployeeAttribute targetAttribute = attribute.value();
                         if (!hasAccessToAttribute(targetAttribute, userPermission))
                             throw new AttributeAccessDeniedException(targetAttribute);
-
                     }
                 }
             } catch (IllegalAccessException e) {

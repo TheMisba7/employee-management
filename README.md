@@ -2,9 +2,9 @@
 
 ## Part 1 - Core Features
 - [x] Set up basic entities
-- [ ] Set up database connection
-- [ ] Set spring security with jwt token
-- [ ] Users & Employee CRUD operations
+- [x] Set up database connection
+- [x] Set spring security with jwt token
+- [x] Users & Employee CRUD operations
 
 - [ ] Implement ABAC system
     - [x] Set up policy engine
@@ -14,7 +14,7 @@
 
 - [ ] Create API endpoints for employee
 - [ ] Create API endpoints for users
-- [ ] Add validation
+- [x] Add validation
 - [ ] Search and Filtering
 - [ ] Write integration tests
 
