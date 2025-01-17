@@ -1,6 +1,6 @@
 # Project Backlog
 
-## Part 1 - Core Features
+### Core Features
 - [x] Set up basic entities
 - [x] Set up database connection
 - [x] Set spring security with jwt token
@@ -18,6 +18,6 @@
 - [x] Search and Filtering
 - [ ] Write integration tests
 
-## Audit Trail:
+### Audit Trail:
 
-- [ ] Audit logging system
+- [x] Audit logging system

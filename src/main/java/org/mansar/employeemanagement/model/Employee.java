@@ -52,4 +52,8 @@ public class Employee {
     private LocalDateTime created;
     @UpdateTimestamp
     private LocalDateTime updated;
+
+    public String getFullName() {
+        return firstname + " " + lastname;
+    }
 }
