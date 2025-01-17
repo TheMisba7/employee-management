@@ -13,12 +13,13 @@ import java.lang.reflect.Field;
 import java.util.Set;
 
 /**
- * Attribute based access engine
+ * Attribute based access control engine
  */
 public class ABACEngine {
 
     public static boolean canAccessEmployee(Employee employee, User actingUser) {
-        if (!actingUser.getRole().getName().equals(RoleEnum.MANAGER))
+        if (actingUser.getRole().getName().equals(RoleEnum.ADMIN)
+                || actingUser.getRole().getName().equals(RoleEnum.HR))
             return true;
         return employee.getDepartment().getId()
                 .equals(actingUser.getDepartment().getId());

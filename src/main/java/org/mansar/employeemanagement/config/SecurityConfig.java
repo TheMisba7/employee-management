@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.mansar.employeemanagement.security.filter.JwtAuthorizationFilter;
 import org.mansar.employeemanagement.security.filter.LoginFilter;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -31,6 +33,16 @@ public class SecurityConfig {
             "/v3/api-docs/**"};
     private final LoginFilter loginFilter;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
+
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        String roles = """
+                ADMIN > HR
+                HR > MANAGER
+                """;
+        return RoleHierarchyImpl
+                .fromHierarchy(roles);
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity https) throws Exception {

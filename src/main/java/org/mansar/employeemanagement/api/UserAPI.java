@@ -2,7 +2,7 @@ package org.mansar.employeemanagement.api;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.mansar.employeemanagement.dto.EmployeeDTO;
+import org.mansar.employeemanagement.dto.UserDTO;
 import org.mansar.employeemanagement.dto.request.UserRQ;
 import org.mansar.employeemanagement.service.IUserService;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,13 +23,13 @@ public class UserAPI {
     private final IUserService userService;
 
     @PostMapping
-    public void create(@RequestBody @Valid UserRQ userRQ) {
-        userService.save(userRQ);
+    public UserDTO create(@RequestBody @Valid UserRQ userRQ) {
+        return userService.save(userRQ);
     }
 
     @PutMapping("/{employeeId}")
-    public void update(@PathVariable Long employeeId, @RequestBody @Valid UserRQ userRQ) {
-        userService.update(employeeId, userRQ);
+    public UserDTO update(@PathVariable Long employeeId, @RequestBody @Valid UserRQ userRQ) {
+        return userService.update(employeeId, userRQ);
     }
 
     @DeleteMapping("/{employeeId}")
@@ -38,7 +38,7 @@ public class UserAPI {
     }
 
     @GetMapping
-    public List<EmployeeDTO> listEmployees() {
-        return null;
+    public List<UserDTO> listEmployees() {
+        return userService.getUsers();
     }
 }
