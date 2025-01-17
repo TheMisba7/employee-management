@@ -1,6 +1,8 @@
 package org.mansar.employeemanagement.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.mansar.employeemanagement.core.PermissionEnum;
+import org.mansar.employeemanagement.core.Trail;
 import org.mansar.employeemanagement.dao.UserDao;
 import org.mansar.employeemanagement.dto.UserDTO;
 import org.mansar.employeemanagement.dto.request.UserRQ;
@@ -41,10 +43,12 @@ public class UserServiceImpl implements IUserService {
         }
         if (user.getId() == null) {
             user.setPassword(passwordEncoder.encode(userRQ.getPassword()));
+            user.setUsername(userRQ.getUsername());
         }
         return userDao.save(user);
     }
     @Override
+    @Trail(action = PermissionEnum.CREATE)
     public UserDTO save(UserRQ newUser) {
         userDao.findByUsername(newUser.getUsername())
                 .ifPresent(u -> {throw new BusinessException("Username already exist");});
@@ -65,12 +69,14 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    @Trail(action = PermissionEnum.UPDATE)
     public UserDTO update(Long userId, UserRQ user) {
         User subjectUser = getById(userId);
         return userMapper.toDTO(mapAndSave(user, subjectUser));
     }
 
     @Override
+    @Trail(action = PermissionEnum.DELETE)
     public void delete(Long userId) {
         userDao.deleteById(userId);
     }

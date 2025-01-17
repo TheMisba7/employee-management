@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.mansar.employeemanagement.core.ABACEngine;
 import org.mansar.employeemanagement.core.PermissionEnum;
 import org.mansar.employeemanagement.core.RoleEnum;
+import org.mansar.employeemanagement.core.Trail;
 import org.mansar.employeemanagement.dao.EmployeeDao;
 import org.mansar.employeemanagement.dao.EmployeeSpecification;
 import org.mansar.employeemanagement.dto.EmployeeDTO;
@@ -32,7 +33,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
     private final EmployeeMapper employeeMapper;
     private final IDepartmentService departmentService;
 
-    private void mapAndSave(EmployeeRQ source, Employee target) {
+    public Employee mapAndSave(EmployeeRQ source, Employee target) {
         employeeMapper.fromDTO(source, target);
 
         if (source.getDepartmentId() != null) {
@@ -42,13 +43,13 @@ public class EmployeeServiceImpl implements IEmployeeService {
                 target.setDepartment(departmentService.getDepartment(source.getDepartmentId()));
             }
         }
-        employeeDao.save(target);
+        return employeeDao.save(target);
     }
     @Override
+    @Trail(action = PermissionEnum.CREATE)
     public EmployeeDTO create(EmployeeRQ employeeRQ) {
         Employee employee = new Employee();
-        mapAndSave(employeeRQ, employee);
-        return employeeMapper.toDTO(employee);
+        return employeeMapper.toDTO(mapAndSave(employeeRQ, employee));
     }
 
     @Override
@@ -72,14 +73,14 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     @Override
+    @Trail(action = PermissionEnum.UPDATE)
     public EmployeeDTO update(Long employeeId, EmployeeRQ employeeRQ) {
         User actingUser = IUserService.getCurrentUser();
         Employee subjectEmployee = getEmployee(employeeId);
         if (!ABACEngine.canAccessEmployee(subjectEmployee, actingUser))
             throw new PermissionDeniedException(PermissionEnum.UPDATE);
         ABACEngine.performAttributeAccessCheck(employeeRQ, PermissionEnum.UPDATE, actingUser.getRole());
-        mapAndSave(employeeRQ, subjectEmployee);
-        return employeeMapper.toDTO(subjectEmployee);
+        return employeeMapper.toDTO(mapAndSave(employeeRQ, subjectEmployee));
     }
 
     @Override
@@ -89,6 +90,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     @Override
+    @Trail(action = PermissionEnum.DELETE)
     public void delete(Long employee) {
         employeeDao.deleteById(employee);
     }

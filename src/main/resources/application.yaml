@@ -21,4 +21,7 @@ security:
 logging:
   level:
     web: debug
+    org:
+      springframework:
+        aop: debug
 

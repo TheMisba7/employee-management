@@ -4,6 +4,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.mansar.employeemanagement.dto.ApiError;
 import org.mansar.employeemanagement.exception.AttributeAccessDeniedException;
+import org.mansar.employeemanagement.exception.BusinessException;
 import org.mansar.employeemanagement.exception.PermissionDeniedException;
 import org.mansar.employeemanagement.exception.RecordNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,13 @@ public class ErrorHandler {
     public ApiError handleAccessDeniedException(AccessDeniedException ex) {
         log.info(ex.getMessage(), ex);
         return new ApiError(HttpStatus.FORBIDDEN.value(), "Access Denied");
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    @ResponseStatus(HttpStatus.BAD_GATEWAY)
+    public ApiError handleBusinessException(BusinessException ex) {
+        log.info(ex.getMessage(), ex);
+        return new ApiError(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
