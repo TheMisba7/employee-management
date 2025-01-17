@@ -2,6 +2,7 @@ package org.mansar.employeemanagement.service;
 
 import org.mansar.employeemanagement.core.RoleEnum;
 import org.mansar.employeemanagement.dto.EmployeeDTO;
+import org.mansar.employeemanagement.dto.FilterParam;
 import org.mansar.employeemanagement.dto.request.EmployeeRQ;
 import org.mansar.employeemanagement.model.Employee;
 import org.springframework.security.access.annotation.Secured;
@@ -25,7 +26,7 @@ public interface IEmployeeService {
     @Secured({"HR"})
     EmployeeDTO create(EmployeeRQ employeeDTO);
     @Secured({"MANAGER"})
-    List<EmployeeDTO> getEmployees();
+    List<EmployeeDTO> getEmployees(FilterParam filterParam);
     @Secured({"MANAGER"})
     EmployeeDTO update(Long employeeId, EmployeeRQ employeeRQ);
     Employee getEmployee(Long employeeId);

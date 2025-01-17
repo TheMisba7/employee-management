@@ -11,7 +11,8 @@ public enum EmployeeAttribute {
     ADDRESS("address"),
     CREATED("created"),
     UPDATED("updated"),
-    STATUS("status");
+    STATUS("status"),
+    HIRE_DATE("hireDate");
 
     private final String value;
     EmployeeAttribute(String name) {

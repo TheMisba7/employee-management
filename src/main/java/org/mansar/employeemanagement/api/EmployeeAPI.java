@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.mansar.employeemanagement.dto.EmployeeDTO;
+import org.mansar.employeemanagement.dto.FilterParam;
 import org.mansar.employeemanagement.dto.request.EmployeeRQ;
 import org.mansar.employeemanagement.service.IEmployeeService;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -67,7 +68,7 @@ public class EmployeeAPI {
                             schema = @Schema(implementation = EmployeeDTO.class))})
     })
     @GetMapping
-    public List<EmployeeDTO> listEmployees() {
-        return employeeService.getEmployees();
+    public List<EmployeeDTO> listEmployees(@RequestBody(required = false) FilterParam filterParam) {
+        return employeeService.getEmployees(filterParam);
     }
 }

@@ -18,6 +18,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.mansar.employeemanagement.core.EmployeeStatus;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter @Setter
@@ -45,6 +46,8 @@ public class Employee {
     @OneToOne
     @JoinColumn(name = "address_id")
     private Address address;
+    @Column(name = "hire_date")
+    private Date hireDate;
     @CreationTimestamp
     private LocalDateTime created;
     @UpdateTimestamp

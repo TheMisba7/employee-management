@@ -1,5 +1,6 @@
 package org.mansar.employeemanagement.service;
 
+import org.mansar.employeemanagement.dto.FilterParam;
 import org.mansar.employeemanagement.dto.UserDTO;
 import org.mansar.employeemanagement.dto.request.UserRQ;
 import org.mansar.employeemanagement.model.User;
