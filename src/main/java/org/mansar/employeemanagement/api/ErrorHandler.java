@@ -1,5 +1,6 @@
 package org.mansar.employeemanagement.api;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.mansar.employeemanagement.dto.ApiError;
 import org.mansar.employeemanagement.exception.AttributeAccessDeniedException;
@@ -40,6 +41,13 @@ public class ErrorHandler {
     public ApiError handleAccessDeniedException(AccessDeniedException ex) {
         log.info(ex.getMessage(), ex);
         return new ApiError(HttpStatus.FORBIDDEN.value(), "Access Denied");
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ApiError handleExpiredJwtException(ExpiredJwtException ex) {
+        log.info(ex.getMessage(), ex);
+        return new ApiError(HttpStatus.FORBIDDEN.value(), "invalid token");
     }
     @ExceptionHandler(RecordNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)

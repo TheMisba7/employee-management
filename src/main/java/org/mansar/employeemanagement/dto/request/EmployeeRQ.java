@@ -2,12 +2,14 @@ package org.mansar.employeemanagement.dto.request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mansar.employeemanagement.core.Attribute;
 import org.mansar.employeemanagement.core.EmployeeAttribute;
+import org.mansar.employeemanagement.core.EmployeeStatus;
 import org.mansar.employeemanagement.model.Address;
 import org.mansar.employeemanagement.model.Contact;
 
@@ -24,7 +26,7 @@ public class EmployeeRQ {
     @NotBlank(message = "job title is required")
     @Attribute(value = EmployeeAttribute.JOB_TITLE)
     private String jobTitle;
-    @NotBlank(message = "department is required")
+    @NotNull(message = "department is required")
     @Attribute(value = EmployeeAttribute.DEPARTMENT)
     private Long departmentId;
     @Valid
@@ -32,4 +34,7 @@ public class EmployeeRQ {
     private Contact contact;
     @Attribute(value = EmployeeAttribute.ADDRESS)
     private Address address;
+    @Attribute(value = EmployeeAttribute.STATUS)
+    @NotNull(message = "status is required")
+    private EmployeeStatus status;
 }

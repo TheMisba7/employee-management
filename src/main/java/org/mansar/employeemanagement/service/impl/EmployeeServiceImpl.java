@@ -1,7 +1,6 @@
 package org.mansar.employeemanagement.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.mansar.employeemanagement.mapper.EmployeeMapper;
 import org.mansar.employeemanagement.core.ABACEngine;
 import org.mansar.employeemanagement.core.PermissionEnum;
 import org.mansar.employeemanagement.core.RoleEnum;
@@ -10,7 +9,10 @@ import org.mansar.employeemanagement.dto.EmployeeDTO;
 import org.mansar.employeemanagement.dto.request.EmployeeRQ;
 import org.mansar.employeemanagement.exception.PermissionDeniedException;
 import org.mansar.employeemanagement.exception.RecordNotFoundException;
+import org.mansar.employeemanagement.mapper.EmployeeMapper;
 import org.mansar.employeemanagement.model.Employee;
+import org.mansar.employeemanagement.model.Permission;
+import org.mansar.employeemanagement.model.Role;
 import org.mansar.employeemanagement.model.User;
 import org.mansar.employeemanagement.service.IDepartmentService;
 import org.mansar.employeemanagement.service.IEmployeeService;
@@ -18,6 +20,7 @@ import org.mansar.employeemanagement.service.IUserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,31 +42,39 @@ public class EmployeeServiceImpl implements IEmployeeService {
         employeeDao.save(target);
     }
     @Override
-    public void create(EmployeeRQ employeeRQ) {
+    public EmployeeDTO create(EmployeeRQ employeeRQ) {
         Employee employee = new Employee();
         mapAndSave(employeeRQ, employee);
+        return employeeMapper.toDTO(employee);
     }
 
     @Override
     public List<EmployeeDTO> getEmployees() {
         User actingUser = IUserService.getCurrentUser();
         List<Employee> employees;
-        if (!actingUser.getRole().getName().equals(RoleEnum.MANAGER))
-            employees = employeeDao.findAll();
-        else
+        Role role = actingUser.getRole();
+        if (role.getName().equals(RoleEnum.ADMIN) || role.getName().equals(RoleEnum.HR))
+            return employeeMapper.toDTO(employeeDao.findAll());
+        else {
+            Permission readPermission = ABACEngine.getRequiredPermission(PermissionEnum.READ, role);
+            if (readPermission == null)
+                throw new PermissionDeniedException(PermissionEnum.READ);
             employees = employeeDao.findByDepartmentId(actingUser.getDepartment().getId());
-
-        return employeeMapper.toDTO(employees);
+            return employees.stream().map(employeeMapper::toDTO)
+                    .peek(em -> ABACEngine.removeUnauthorizedAttributes(em, readPermission.getAttributes()))
+                    .collect(Collectors.toList());
+        }
     }
 
     @Override
-    public void update(Long employeeId, EmployeeRQ employeeRQ) {
+    public EmployeeDTO update(Long employeeId, EmployeeRQ employeeRQ) {
         User actingUser = IUserService.getCurrentUser();
         Employee subjectEmployee = getEmployee(employeeId);
         if (!ABACEngine.canAccessEmployee(subjectEmployee, actingUser))
             throw new PermissionDeniedException(PermissionEnum.UPDATE);
         ABACEngine.performAttributeAccessCheck(employeeRQ, PermissionEnum.UPDATE, actingUser.getRole());
         mapAndSave(employeeRQ, subjectEmployee);
+        return employeeMapper.toDTO(subjectEmployee);
     }
 
     @Override

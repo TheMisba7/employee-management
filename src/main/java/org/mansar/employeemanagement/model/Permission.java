@@ -40,4 +40,13 @@ public class Permission {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role role;
+
+
+    public void addAttributes(Set<EmployeeAttribute> attributes) {
+        this.attributes.addAll(attributes);
+    }
+
+    public void removeAttribute(EmployeeAttribute attr) {
+        this.attributes.remove(attr);
+    }
 }

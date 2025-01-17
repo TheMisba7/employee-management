@@ -12,8 +12,8 @@
 
 ### REST API
 
-- [ ] Create API endpoints for employee
-- [ ] Create API endpoints for users
+- [x] Create API endpoints for employee
+- [x] Create API endpoints for users
 - [x] Add validation
 - [ ] Search and Filtering
 - [ ] Write integration tests
